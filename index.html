@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Quote Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;600&family=Dancing+Script:wght@400;700&family=Bebas+Neue&display=swap');
+        
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="file"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .remove-image-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .remove-image-btn:hover {
+            background: #ff3742;
+        }
+
+        .overlay-controls {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .overlay-controls label {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .overlay-controls input[type="range"] {
+            width: 120px;
+            margin-left: 8px;
+        }
+
+        .styling-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .styling-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .style-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .style-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        select, input[type="color"], input[type="number"] {
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input[type="color"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .color-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .range-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .range-input input[type="range"] {
+            flex: 1;
+        }
+
+        .range-value {
+            min-width: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .template-option {
+            padding: 12px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .template-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .template-option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .quote-preview {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .quote-canvas {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .download-section {
+            display: none;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .download-png {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .download-jpg {
+            background: #2196F3;
+            color: white;
+        }
+
+        .copy-clipboard {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .template-minimal {
+            background: linear-gradient(45deg, #f0f0f0, #ffffff);
+            color: #333;
+        }
+
+        .template-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .template-dark {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+        }
+
+        .template-warm {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: #333;
+        }
+
+        .template-nature {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Beautiful Quote Generator</h1>
+            <p>Transform your text into stunning visual quotes perfect for social media</p>
+        </div>
+        
+        <div class="input-section">
+            <div class="form-group">
+                <label for="quote-text">Your Quote:</label>
+                <textarea id="quote-text" placeholder="Enter your inspirational quote here..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="author-name">Author (optional):</label>
+                <input type="text" id="author-name" placeholder="Quote author">
+            </div>
+            
+            <div class="form-group">
+                <label for="custom-image">Custom Background Image (optional):</label>
+                <input type="file" id="custom-image" accept="image/*" onchange="handleImageUpload(event)">
+                <div class="image-preview" id="image-preview" style="display: none;">
+                    <img id="preview-img" style="max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 10px;">
+                    <button type="button" class="remove-image-btn" onclick="removeImage()">Remove Image</button>
+                </div>
+                <div class="overlay-controls" id="overlay-controls">
+                    <label>Overlay Opacity: <input type="range" id="overlay-opacity" min="0" max="80" value="40" oninput="updateOverlayPreview()">%</label>
+                    <label>Blur: <input type="range" id="background-blur" min="0" max="10" value="2" oninput="updateOverlayPreview()">px</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Choose Template:</label>
+                <div class="template-selector">
+                    <div class="template-option selected" data-template="minimal">Minimal</div>
+                    <div class="template-option" data-template="gradient">Gradient</div>
+                    <div class="template-option" data-template="dark">Dark</div>
+                    <div class="template-option" data-template="warm">Warm</div>
+                    <div class="template-option" data-template="nature">Nature</div>
+                    <div class="template-option" data-template="ocean">Ocean</div>
+                    <div class="template-option" data-template="sunset">Sunset</div>
+                    <div class="template-option" data-template="royal">Royal</div>
+                    <div class="template-option" data-template="vintage">Vintage</div>
+                    <div class="template-option" data-template="neon">Neon</div>
+                    <div class="template-option" data-template="forest">Forest</div>
+                    <div class="template-option" data-template="rose">Rose Gold</div>
+                </div>
+            </div>
+
+            <!-- Text Styling Section -->
+            <div class="styling-section">
+                <h3>✨ Text Styling</h3>
+                <div class="style-grid">
+                    <div class="style-group">
+                        <label for="font-family">Font Family</label>
+                        <select id="font-family" onchange="updatePreview()">
+                            <option value="Playfair Display">Playfair Display (Elegant)</option>
+                            <option value="Inter">Inter (Modern)</option>
+                            <option value="Merriweather">Merriweather (Classic)</option>
+                            <option value="Montserrat">Montserrat (Clean)</option>
+                            <option value="Open Sans">Open Sans (Friendly)</option>
+                            <option value="Lora">Lora (Readable)</option>
+                            <option value="Crimson Text">Crimson Text (Literary)</option>
+                            <option value="Oswald">Oswald (Bold)</option>
+                            <option value="Dancing Script">Dancing Script (Script)</option>
+                            <option value="Bebas Neue">Bebas Neue (Display)</option>
+                        </select>
+                    </div>
+
+                    <div class="style-group">
+                        <label>Style Presets</label>
+                        <select id="style-presets" onchange="applyPreset()">
+                            <option value="">Choose a preset...</option>
+                            <option value="elegant">Elegant Classic</option>
+                            <option value="modern">Modern Minimal</option>
+                            <option value="bold">Bold Impact</option>
+                            <option value="script">Script Artistic</option>
+                            <option value="professional">Professional</option>
+                            <option value="social">Social Media</option>
+                        </select>
+                    </div>
+
+                    <div class="style-group">
+                        <label>Text Style</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="text-bold" onchange="updatePreview()"> Bold</label>
+                            <label><input type="checkbox" id="text-italic" onchange="updatePreview()"> Italic</label>
+                        </div>
+                    </div>
+
+                    <div class="style-group">
+                        <label for="text-align">Text Alignment</label>
+                        <select id="text-align" onchange="updatePreview()">
+                            <option value="center">Center</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
+
+                    <div class="style-group">
+                        <label for="font-size">Font Size</label>
+                        <div class="range-input">
+                            <input type="range" id="font-size" min="20" max="100" value="50" oninput="updateFontSizeDisplay(); updatePreview()">
+                            <span class="range-value" id="font-size-value">Auto</span>
+                        </div>
+                        <small style="color: #666;">Use slider for fixed size, or leave at 50 for auto-sizing</small>
+                    </div>
+
+                    <div class="style-group">
+                        <label for="line-spacing">Line Spacing</label>
+                        <div class="range-input">
+                            <input type="range" id="line-spacing" min="1.0" max="2.5" step="0.1" value="1.4" oninput="updateLineSpacingDisplay(); updatePreview()">
+                            <span class="range-value" id="line-spacing-value">1.4</span>
+                        </div>
+                    </div>
+
+                    <div class="style-group">
+                        <label>Text Colors</label>
+                        <div class="color-inputs">
+                            <div>
+                                <small>Quote</small>
+                                <input type="color" id="quote-color" value="#ffffff" onchange="updatePreview()">
+                            </div>
+                            <div>
+                                <small>Author</small>
+                                <input type="color" id="author-color" value="#e0e0e0" onchange="updatePreview()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px;">🎨 Text Effects</h3>
+                <div class="style-grid">
+                    <div class="style-group">
+                        <label for="text-shadow">Text Shadow</label>
+                        <div class="range-input">
+                            <input type="range" id="text-shadow" min="0" max="10" value="2" oninput="updateShadowDisplay(); updatePreview()">
+                            <span class="range-value" id="shadow-value">2px</span>
+                        </div>
+                    </div>
+
+                    <div class="style-group">
+                        <label for="text-stroke">Text Outline</label>
+                        <div class="range-input">
+                            <input type="range" id="text-stroke" min="0" max="5" value="0" oninput="updateStrokeDisplay(); updatePreview()">
+                            <span class="range-value" id="stroke-value">0px</span>
+                        </div>
+                    </div>
+
+                    <div class="style-group">
+                        <label for="stroke-color">Outline Color</label>
+                        <input type="color" id="stroke-color" value="#000000" onchange="updatePreview()">
+                    </div>
+
+                    <div class="style-group">
+                        <label>Quote Marks</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="show-quotes" checked onchange="updatePreview()"> Show Quotes</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="generate-btn" onclick="generateQuote()">Generate Quote</button>
+            
+            <div class="quote-preview">
+                <canvas id="quote-canvas" class="quote-canvas"></canvas>
+                <div class="download-section" id="download-section">
+                    <button class="download-btn copy-clipboard" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                    <button class="download-btn download-png" onclick="downloadQuote('png')">📥 Download PNG</button>
+                    <button class="download-btn download-jpg" onclick="downloadQuote('jpg')">📥 Download JPG</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedTemplate = 'minimal';
+        let customBackgroundImage = null;
+        const canvas = document.getElementById('quote-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size for social media (Instagram post size)
+        canvas.width = 1080;
+        canvas.height = 1080;
+
+        // Template selection
+        document.querySelectorAll('.template-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.template-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedTemplate = this.dataset.template;
+            });
+        });
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customBackgroundImage = new Image();
+                    customBackgroundImage.onload = function() {
+                        document.getElementById('preview-img').src = e.target.result;
+                        document.getElementById('image-preview').style.display = 'block';
+                        document.getElementById('overlay-controls').style.display = 'block';
+                    };
+                    customBackgroundImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage() {
+            customBackgroundImage = null;
+            document.getElementById('custom-image').value = '';
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('overlay-controls').style.display = 'none';
+        }
+
+        function updateOverlayPreview() {
+            // This function could be used to show live preview updates
+            // For now, user will see changes when they generate the quote
+        }
+
+        // Styling control functions
+        function updateFontSizeDisplay() {
+            const value = document.getElementById('font-size').value;
+            document.getElementById('font-size-value').textContent = value == 50 ? 'Auto' : value + 'px';
+        }
+
+        function updateLineSpacingDisplay() {
+            const value = document.getElementById('line-spacing').value;
+            document.getElementById('line-spacing-value').textContent = value;
+        }
+
+        function updateShadowDisplay() {
+            const value = document.getElementById('text-shadow').value;
+            document.getElementById('shadow-value').textContent = value + 'px';
+        }
+
+        function updateStrokeDisplay() {
+            const value = document.getElementById('text-stroke').value;
+            document.getElementById('stroke-value').textContent = value + 'px';
+        }
+
+        function updatePreview() {
+            // Auto-generate preview if text exists
+            const quoteText = document.getElementById('quote-text').value.trim();
+            if (quoteText) {
+                const authorName = document.getElementById('author-name').value.trim();
+                drawQuote(quoteText, authorName, selectedTemplate);
+            }
+        }
+
+        function getCustomStyles() {
+            return {
+                fontFamily: document.getElementById('font-family').value,
+                isBold: document.getElementById('text-bold').checked,
+                isItalic: document.getElementById('text-italic').checked,
+                textAlign: document.getElementById('text-align').value,
+                fontSize: document.getElementById('font-size').value,
+                lineSpacing: parseFloat(document.getElementById('line-spacing').value),
+                quoteColor: document.getElementById('quote-color').value,
+                authorColor: document.getElementById('author-color').value,
+                textShadow: parseInt(document.getElementById('text-shadow').value),
+                textStroke: parseInt(document.getElementById('text-stroke').value),
+                strokeColor: document.getElementById('stroke-color').value,
+                showQuotes: document.getElementById('show-quotes').checked
+            };
+        }
+
+        function generateQuote() {
+            const quoteText = document.getElementById('quote-text').value.trim();
+            const authorName = document.getElementById('author-name').value.trim();
+            
+            if (!quoteText) {
+                alert('Please enter a quote text');
+                return;
+            }
+
+            drawQuote(quoteText, authorName, selectedTemplate);
+            document.getElementById('download-section').style.display = 'flex';
+        }
+
+        function drawQuote(text, author, template) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Check if we should use custom background image
+            if (customBackgroundImage) {
+                drawCustomImageBackground();
+            } else {
+                drawGradientBackground(template);
+            }
+            
+            // Draw quote content
+            drawQuoteContent(text, author, template);
+        }
+
+        function drawCustomImageBackground() {
+            // Get overlay settings
+            const overlayOpacity = document.getElementById('overlay-opacity').value / 100;
+            const blurAmount = document.getElementById('background-blur').value;
+            
+            // Save context state
+            ctx.save();
+            
+            // Apply blur if specified
+            if (blurAmount > 0) {
+                ctx.filter = `blur(${blurAmount}px)`;
+            }
+            
+            // Calculate image scaling to fill canvas while maintaining aspect ratio
+            const scale = Math.max(canvas.width / customBackgroundImage.width, canvas.height / customBackgroundImage.height);
+            const scaledWidth = customBackgroundImage.width * scale;
+            const scaledHeight = customBackgroundImage.height * scale;
+            const x = (canvas.width - scaledWidth) / 2;
+            const y = (canvas.height - scaledHeight) / 2;
+            
+            // Draw the background image
+            ctx.drawImage(customBackgroundImage, x, y, scaledWidth, scaledHeight);
+            
+            // Reset filter
+            ctx.filter = 'none';
+            
+            // Add dark overlay for text readability
+            ctx.fillStyle = `rgba(0, 0, 0, ${overlayOpacity})`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Restore context state
+            ctx.restore();
+        }
+
+        function drawGradientBackground(template) {
+            // Enhanced template styles with better elegance
+            const templates = {
+                minimal: {
+                    background: ['#fafafa', '#ffffff'],
+                    textColor: '#2c2c2c',
+                    authorColor: '#757575',
+                    accent: '#e0e0e0'
+                },
+                gradient: {
+                    background: ['#667eea', '#764ba2'],
+                    textColor: '#ffffff',
+                    authorColor: '#f8f9ff',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                dark: {
+                    background: ['#1a1a1a', '#2d3748'],
+                    textColor: '#ffffff',
+                    authorColor: '#cbd5e0',
+                    accent: 'rgba(255,255,255,0.2)'
+                },
+                warm: {
+                    background: ['#ffecd2', '#fcb69f'],
+                    textColor: '#5d4037',
+                    authorColor: '#8d6e63',
+                    accent: 'rgba(93,64,55,0.2)'
+                },
+                nature: {
+                    background: ['#d299c2', '#fef9d7'],
+                    textColor: '#2e7d32',
+                    authorColor: '#558b2f',
+                    accent: 'rgba(46,125,50,0.2)'
+                },
+                ocean: {
+                    background: ['#0083B0', '#00B4DB'],
+                    textColor: '#ffffff',
+                    authorColor: '#e0f7ff',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                sunset: {
+                    background: ['#ff6b6b', '#feca57'],
+                    textColor: '#ffffff',
+                    authorColor: '#fff4e6',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                royal: {
+                    background: ['#4b6cb7', '#182848'],
+                    textColor: '#ffffff',
+                    authorColor: '#d4e3ff',
+                    accent: 'rgba(255,255,255,0.2)'
+                },
+                vintage: {
+                    background: ['#c9a96e', '#a0826d'],
+                    textColor: '#ffffff',
+                    authorColor: '#f5e6d3',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                neon: {
+                    background: ['#1a1a2e', '#16213e'],
+                    textColor: '#00f5ff',
+                    authorColor: '#ff007f',
+                    accent: 'rgba(0,245,255,0.3)'
+                },
+                forest: {
+                    background: ['#2d5016', '#3c6e1f'],
+                    textColor: '#ffffff',
+                    authorColor: '#c8d5b9',
+                    accent: 'rgba(255,255,255,0.2)'
+                },
+                rose: {
+                    background: ['#f093fb', '#f5576c'],
+                    textColor: '#ffffff',
+                    authorColor: '#ffe8f0',
+                    accent: 'rgba(255,255,255,0.3)'
+                }
+            };
+
+            const currentTemplate = templates[template];
+            
+            // Create elegant gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, currentTemplate.background[0]);
+            gradient.addColorStop(1, currentTemplate.background[1]);
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add subtle texture overlay
+            ctx.fillStyle = currentTemplate.accent;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawQuoteContent(text, author, template) {
+            const customStyles = getCustomStyles();
+            
+            // Get template colors or use white text for custom images
+            const templates = {
+                minimal: {
+                    textColor: '#2c2c2c',
+                    authorColor: '#757575',
+                    accent: '#e0e0e0'
+                },
+                gradient: {
+                    textColor: '#ffffff',
+                    authorColor: '#f8f9ff',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                dark: {
+                    textColor: '#ffffff',
+                    authorColor: '#cbd5e0',
+                    accent: 'rgba(255,255,255,0.2)'
+                },
+                warm: {
+                    textColor: '#5d4037',
+                    authorColor: '#8d6e63',
+                    accent: 'rgba(93,64,55,0.2)'
+                },
+                nature: {
+                    textColor: '#2e7d32',
+                    authorColor: '#558b2f',
+                    accent: 'rgba(46,125,50,0.2)'
+                },
+                ocean: {
+                    textColor: '#ffffff',
+                    authorColor: '#e0f7ff',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                sunset: {
+                    textColor: '#ffffff',
+                    authorColor: '#fff4e6',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                royal: {
+                    textColor: '#ffffff',
+                    authorColor: '#d4e3ff',
+                    accent: 'rgba(255,255,255,0.2)'
+                },
+                vintage: {
+                    textColor: '#ffffff',
+                    authorColor: '#f5e6d3',
+                    accent: 'rgba(255,255,255,0.3)'
+                },
+                neon: {
+                    textColor: '#00f5ff',
+                    authorColor: '#ff007f',
+                    accent: 'rgba(0,245,255,0.3)'
+                },
+                forest: {
+                    textColor: '#ffffff',
+                    authorColor: '#c8d5b9',
+                    accent: 'rgba(255,255,255,0.2)'
+                },
+                rose: {
+                    textColor: '#ffffff',
+                    authorColor: '#ffe8f0',
+                    accent: 'rgba(255,255,255,0.3)'
+                }
+            };
+
+            // Use custom colors or template colors
+            const defaultTemplate = customBackgroundImage ? 
+                { textColor: '#ffffff', authorColor: '#f0f0f0', accent: 'rgba(255,255,255,0.3)' } : 
+                templates[template];
+
+            const textColor = customStyles.quoteColor || defaultTemplate.textColor;
+            const authorColor = customStyles.authorColor || defaultTemplate.authorColor;
+            const accentColor = defaultTemplate.accent;
+
+            // Calculate font size - use custom or auto-calculate
+            let quoteFontSize;
+            if (customStyles.fontSize == 50) { // Auto mode
+                const baseSize = calculateOptimalFontSize(text, canvas.width - 200, canvas.height - 300);
+                quoteFontSize = Math.max(28, Math.min(baseSize, 72));
+            } else {
+                quoteFontSize = Math.max(20, Math.min(parseInt(customStyles.fontSize), 100));
+            }
+            
+            const authorFontSize = Math.max(16, quoteFontSize * 0.45);
+            
+            // Build font string with custom styles
+            let fontWeight = customStyles.isBold ? 'bold' : '400';
+            let fontStyle = customStyles.isItalic ? 'italic' : 'normal';
+            let fontFamily = customStyles.fontFamily || 'Playfair Display';
+            
+            // Set text properties
+            ctx.textAlign = customStyles.textAlign || 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Create font string with proper fallbacks
+            const quoteFontString = `${fontStyle} ${fontWeight} ${quoteFontSize}px "${fontFamily}", Georgia, serif`;
+            ctx.font = quoteFontString;
+            
+            console.log('Applied font:', quoteFontString); // Debug log
+            
+            // Improved word wrapping algorithm
+            const lines = wrapTextToLines(text, ctx, canvas.width - 200);
+            
+            // Calculate vertical positioning with custom spacing
+            const lineHeight = quoteFontSize * customStyles.lineSpacing;
+            const totalTextHeight = lines.length * lineHeight;
+            const authorHeight = author ? authorFontSize * 2 : 0;
+            const decorativeHeight = customStyles.showQuotes ? 60 : 30;
+            const totalContentHeight = totalTextHeight + authorHeight + decorativeHeight;
+            
+            let startY = (canvas.height - totalContentHeight) / 2;
+            
+            // Adjust alignment
+            let textX = canvas.width / 2;
+            if (customStyles.textAlign === 'left') {
+                textX = 100;
+            } else if (customStyles.textAlign === 'right') {
+                textX = canvas.width - 100;
+            }
+            
+            // Add elegant opening quotation mark (if enabled)
+            if (customStyles.showQuotes) {
+                ctx.font = `${fontStyle} ${fontWeight} ${quoteFontSize * 1.8}px "${fontFamily}", Georgia, serif`;
+                ctx.fillStyle = accentColor;
+                const quoteOffset = customStyles.textAlign === 'center' ? 40 : 20;
+                ctx.fillText('"', textX - quoteOffset, startY - quoteFontSize * 0.8);
+            }
+            
+            // Set up text effects
+            ctx.fillStyle = textColor;
+            ctx.font = quoteFontString;
+            
+            // Apply text stroke if enabled
+            if (customStyles.textStroke > 0) {
+                ctx.strokeStyle = customStyles.strokeColor;
+                ctx.lineWidth = customStyles.textStroke;
+            }
+            
+            // Apply text shadow if enabled
+            if (customStyles.textShadow > 0) {
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowOffsetX = customStyles.textShadow;
+                ctx.shadowOffsetY = customStyles.textShadow;
+                ctx.shadowBlur = customStyles.textShadow * 2;
+            }
+            
+            // Draw quote text with custom styling
+            lines.forEach((line, index) => {
+                const yPos = startY + (index * lineHeight);
+                
+                // Draw stroke first if enabled
+                if (customStyles.textStroke > 0) {
+                    ctx.strokeText(line, textX, yPos);
+                }
+                
+                // Draw fill text
+                ctx.fillText(line, textX, yPos);
+            });
+            
+            // Reset effects
+            ctx.shadowColor = 'transparent';
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 0;
+            
+            // Add elegant closing quotation mark (if enabled)
+            if (customStyles.showQuotes) {
+                ctx.font = `${fontStyle} ${fontWeight} ${quoteFontSize * 1.8}px "${fontFamily}", Georgia, serif`;
+                ctx.fillStyle = accentColor;
+                const quoteOffset = customStyles.textAlign === 'center' ? 40 : 20;
+                ctx.fillText('"', textX + quoteOffset, startY + totalTextHeight - quoteFontSize * 0.3);
+            }
+            
+            // Draw decorative line separator
+            const decorY = startY + totalTextHeight + 30;
+            drawDecorativeLine(ctx, textX, decorY, accentColor);
+            
+            // Draw author with custom styling
+            if (author) {
+                ctx.fillStyle = authorColor;
+                const authorFontString = `italic ${authorFontSize}px "${fontFamily}", Georgia, serif`;
+                ctx.font = authorFontString;
+                
+                // Apply same effects to author text
+                if (customStyles.textShadow > 0) {
+                    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+                    ctx.shadowOffsetX = customStyles.textShadow / 2;
+                    ctx.shadowOffsetY = customStyles.textShadow / 2;
+                    ctx.shadowBlur = customStyles.textShadow;
+                }
+                
+                ctx.fillText(`— ${author}`, textX, decorY + 40);
+                
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function calculateOptimalFontSize(text, maxWidth, maxHeight) {
+            const testCanvas = document.createElement('canvas');
+            const testCtx = testCanvas.getContext('2d');
+            const customStyles = getCustomStyles();
+            const fontFamily = customStyles.fontFamily || 'Playfair Display';
+            const fontWeight = customStyles.isBold ? 'bold' : '400';
+            const fontStyle = customStyles.isItalic ? 'italic' : 'normal';
+            const lineSpacing = customStyles.lineSpacing || 1.4;
+            
+            for (let size = 72; size >= 20; size -= 2) {
+                testCtx.font = `${fontStyle} ${fontWeight} ${size}px "${fontFamily}", Georgia, serif`;
+                const lines = wrapTextToLines(text, testCtx, maxWidth);
+                const totalHeight = lines.length * size * lineSpacing;
+                
+                if (totalHeight <= maxHeight) {
+                    return size;
+                }
+            }
+            return 20;
+        }
+
+        // Style presets
+        function applyPreset() {
+            const preset = document.getElementById('style-presets').value;
+            if (!preset) return;
+
+            const presets = {
+                elegant: {
+                    fontFamily: 'Playfair Display',
+                    bold: false,
+                    italic: false,
+                    textAlign: 'center',
+                    fontSize: 50,
+                    lineSpacing: 1.5,
+                    quoteColor: '#2c2c2c',
+                    authorColor: '#666666',
+                    textShadow: 1,
+                    textStroke: 0,
+                    showQuotes: true
+                },
+                modern: {
+                    fontFamily: 'Inter',
+                    bold: false,
+                    italic: false,
+                    textAlign: 'left',
+                    fontSize: 45,
+                    lineSpacing: 1.3,
+                    quoteColor: '#1a1a1a',
+                    authorColor: '#555555',
+                    textShadow: 0,
+                    textStroke: 0,
+                    showQuotes: false
+                },
+                bold: {
+                    fontFamily: 'Oswald',
+                    bold: true,
+                    italic: false,
+                    textAlign: 'center',
+                    fontSize: 55,
+                    lineSpacing: 1.2,
+                    quoteColor: '#000000',
+                    authorColor: '#333333',
+                    textShadow: 2,
+                    textStroke: 1,
+                    strokeColor: '#ffffff',
+                    showQuotes: false
+                },
+                script: {
+                    fontFamily: 'Dancing Script',
+                    bold: false,
+                    italic: false,
+                    textAlign: 'center',
+                    fontSize: 60,
+                    lineSpacing: 1.4,
+                    quoteColor: '#8b4513',
+                    authorColor: '#a0522d',
+                    textShadow: 2,
+                    textStroke: 0,
+                    showQuotes: true
+                },
+                professional: {
+                    fontFamily: 'Merriweather',
+                    bold: false,
+                    italic: false,
+                    textAlign: 'center',
+                    fontSize: 42,
+                    lineSpacing: 1.5,
+                    quoteColor: '#2c3e50',
+                    authorColor: '#7f8c8d',
+                    textShadow: 1,
+                    textStroke: 0,
+                    showQuotes: true
+                },
+                social: {
+                    fontFamily: 'Montserrat',
+                    bold: true,
+                    italic: false,
+                    textAlign: 'center',
+                    fontSize: 48,
+                    lineSpacing: 1.3,
+                    quoteColor: '#e74c3c',
+                    authorColor: '#34495e',
+                    textShadow: 3,
+                    textStroke: 1,
+                    strokeColor: '#ffffff',
+                    showQuotes: false
+                }
+            };
+
+            const settings = presets[preset];
+            if (settings) {
+                // Apply all settings
+                document.getElementById('font-family').value = settings.fontFamily;
+                document.getElementById('text-bold').checked = settings.bold;
+                document.getElementById('text-italic').checked = settings.italic;
+                document.getElementById('text-align').value = settings.textAlign;
+                document.getElementById('font-size').value = settings.fontSize;
+                document.getElementById('line-spacing').value = settings.lineSpacing;
+                document.getElementById('quote-color').value = settings.quoteColor;
+                document.getElementById('author-color').value = settings.authorColor;
+                document.getElementById('text-shadow').value = settings.textShadow;
+                document.getElementById('text-stroke').value = settings.textStroke;
+                if (settings.strokeColor) {
+                    document.getElementById('stroke-color').value = settings.strokeColor;
+                }
+                document.getElementById('show-quotes').checked = settings.showQuotes;
+
+                // Update displays
+                updateFontSizeDisplay();
+                updateLineSpacingDisplay();
+                updateShadowDisplay();
+                updateStrokeDisplay();
+                
+                // Update preview
+                updatePreview();
+            }
+        }
+
+        // Font loading function
+        function loadGoogleFonts() {
+            const link = document.createElement('link');
+            link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;600&family=Dancing+Script:wght@400;700&family=Bebas+Neue&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+            
+            // Wait for fonts to load before enabling preview
+            setTimeout(() => {
+                console.log('Fonts should be loaded now');
+            }, 1000);
+        }
+
+        // Initialize displays on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGoogleFonts();
+            updateFontSizeDisplay();
+            updateLineSpacingDisplay();
+            updateShadowDisplay();
+            updateStrokeDisplay();
+        });
+
+        function wrapTextToLines(text, ctx, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            
+            for (let word of words) {
+                const testLine = currentLine + (currentLine ? ' ' : '') + word;
+                const metrics = ctx.measureText(testLine);
+                
+                if (metrics.width > maxWidth && currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            
+            if (currentLine) {
+                lines.push(currentLine);
+            }
+            
+            return lines;
+        }
+
+        function drawDecorativeLine(ctx, centerX, y, color) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            
+            // Draw elegant decorative line with ornaments
+            ctx.beginPath();
+            ctx.moveTo(centerX - 80, y);
+            ctx.lineTo(centerX - 20, y);
+            ctx.moveTo(centerX + 20, y);
+            ctx.lineTo(centerX + 80, y);
+            ctx.stroke();
+            
+            // Add center ornament
+            ctx.beginPath();
+            ctx.arc(centerX, y, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        async function copyToClipboard() {
+            try {
+                // Convert canvas to blob
+                const blob = await new Promise(resolve => {
+                    canvas.toBlob(resolve, 'image/png');
+                });
+                
+                // Copy to clipboard using modern API
+                if (navigator.clipboard && window.ClipboardItem) {
+                    const clipboardItem = new ClipboardItem({ 'image/png': blob });
+                    await navigator.clipboard.write([clipboardItem]);
+                    
+                    // Show success feedback
+                    showCopyFeedback('✅ Copied to clipboard!');
+                } else {
+                    // Fallback for older browsers
+                    const dataUrl = canvas.toDataURL('image/png');
+                    await navigator.clipboard.writeText(dataUrl);
+                    showCopyFeedback('✅ Image data copied! (Paste as data URL)');
+                }
+            } catch (err) {
+                console.error('Failed to copy to clipboard:', err);
+                
+                // Alternative fallback - create temporary download
+                const dataUrl = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'quote.png';
+                link.click();
+                
+                showCopyFeedback('⚠️ Clipboard not supported - Downloaded instead');
+            }
+        }
+
+        function showCopyFeedback(message) {
+            const button = document.querySelector('.copy-clipboard');
+            const originalText = button.textContent;
+            
+            button.textContent = message;
+            button.style.background = '#4CAF50';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '#9c27b0';
+            }, 2000);
+        }
+
+        function downloadQuote(format) {
+            const link = document.createElement('a');
+            const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+            link.download = `quote.${format}`;
+            link.href = canvas.toDataURL(mimeType, 0.9);
+            link.click();
+        }
+    </script>
+</body>
+</html>
