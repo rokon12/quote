@@ -13,6 +13,9 @@
 
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;600&family=Dancing+Script:wght@400;700&family=Bebas+Neue&display=swap');
         
+        <!-- QR Code Library -->
+        <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+        
         body {
             font-family: 'Playfair Display', Georgia, serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -267,6 +270,92 @@
             }
         }
 
+        .template-library {
+            margin: 20px 0;
+        }
+
+        .template-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .category-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .category-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .template-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .template-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .template-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .template-description {
+            font-size: 12px;
+            color: #666;
+        }
+
         .template-selector {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -386,6 +475,151 @@
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             color: #333;
         }
+
+        /* Template Library Styles */
+        .template-library {
+            margin-top: 15px;
+        }
+
+        .template-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .template-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .template-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .template-preview {
+            height: 120px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .template-text {
+            font-size: 16px;
+            line-height: 1.4;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .template-info {
+            padding: 15px;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .template-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .template-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Template theme backgrounds for preview cards */
+        .template-card.template-minimal .template-preview {
+            background: linear-gradient(45deg, #f0f0f0, #ffffff);
+            color: #2c2c2c;
+        }
+
+        .template-card.template-gradient .template-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .template-card.template-dark .template-preview {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+        }
+
+        .template-card.template-warm .template-preview {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: #5d4037;
+        }
+
+        .template-card.template-nature .template-preview {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #2e7d32;
+        }
+
+        .template-card.template-ocean .template-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .template-card.template-sunset .template-preview {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+        }
+
+        .template-card.template-royal .template-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .template-card.template-vintage .template-preview {
+            background: linear-gradient(135deg, #8b7355 0%, #a0895a 100%);
+            color: white;
+        }
+
+        .template-card.template-neon .template-preview {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #00f5ff;
+        }
+
+        .template-card.template-forest .template-preview {
+            background: linear-gradient(135deg, #2d5016 0%, #3e6b1f 100%);
+            color: white;
+        }
+
+        .template-card.template-rose .template-preview {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -449,6 +683,74 @@
                         <span>×</span>
                         <input type="number" id="custom-height" placeholder="Height" min="400" max="2400" value="1080" style="width: 100px;">
                         <button type="button" onclick="applyCustomSize()" style="padding: 8px 12px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Template Library Section -->
+                <div class="styling-section">
+                    <h3>📚 Template Library</h3>
+                    <div class="template-library">
+                        <div class="template-categories">
+                            <div class="category-btn active" data-category="all" onclick="filterTemplates('all')">All</div>
+                            <div class="category-btn" data-category="motivational" onclick="filterTemplates('motivational')">Motivational</div>
+                            <div class="category-btn" data-category="business" onclick="filterTemplates('business')">Business</div>
+                            <div class="category-btn" data-category="holiday" onclick="filterTemplates('holiday')">Holiday</div>
+                            <div class="category-btn" data-category="quotes" onclick="filterTemplates('quotes')">Quotes</div>
+                            <div class="category-btn" data-category="announcements" onclick="filterTemplates('announcements')">Announcements</div>
+                        </div>
+                        <div class="template-grid" id="template-grid">
+                            <!-- Templates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code Section -->
+                <div class="styling-section">
+                    <h3>🔗 QR Code</h3>
+                    <div class="style-grid">
+                        <div class="style-group">
+                            <label>Enable QR Code</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="enable-qr" onchange="updatePreview()"> Add QR Code</label>
+                            </div>
+                        </div>
+
+                        <div class="style-group">
+                            <label for="qr-url">QR Code URL</label>
+                            <input type="text" id="qr-url" value="https://bazlur.ca" onchange="updatePreview()" placeholder="https://your-website.com">
+                        </div>
+
+                        <div class="style-group">
+                            <label for="qr-position">Position</label>
+                            <select id="qr-position" onchange="updatePreview()">
+                                <option value="bottom-right">Bottom Right</option>
+                                <option value="bottom-left">Bottom Left</option>
+                                <option value="top-right">Top Right</option>
+                                <option value="top-left">Top Left</option>
+                            </select>
+                        </div>
+
+                        <div class="style-group">
+                            <label for="qr-size">Size</label>
+                            <div class="range-input">
+                                <input type="range" id="qr-size" min="60" max="200" value="100" oninput="updateQRSizeDisplay(); updatePreview()">
+                                <span class="range-value" id="qr-size-value">100px</span>
+                            </div>
+                        </div>
+
+                        <div class="style-group">
+                            <label for="qr-background">Background</label>
+                            <select id="qr-background" onchange="updatePreview()">
+                                <option value="white">White</option>
+                                <option value="transparent">Transparent</option>
+                                <option value="custom">Custom Color</option>
+                            </select>
+                        </div>
+
+                        <div class="style-group" id="qr-color-group" style="display: none;">
+                            <label for="qr-bg-color">Background Color</label>
+                            <input type="color" id="qr-bg-color" value="#ffffff" onchange="updatePreview()">
+                        </div>
                     </div>
                 </div>
 
@@ -678,6 +980,8 @@
         let selectedTemplate = 'minimal';
         let customBackgroundImage = null;
         let logoImage = null;
+        let selectedQuoteTemplate = null;
+        let qrCodeDataURL = null;
         const canvas = document.getElementById('quote-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -698,6 +1002,148 @@
         // Set initial canvas size
         canvas.width = canvasSizes[currentCanvasSize].width;
         canvas.height = canvasSizes[currentCanvasSize].height;
+
+        // Template Library Data
+        const quoteTemplates = {
+            motivational: [
+                {
+                    id: 'success-driven',
+                    name: 'Success Driven',
+                    category: 'motivational',
+                    description: 'Bold text with achievement focus',
+                    style: {
+                        fontFamily: 'Oswald',
+                        fontSize: 'auto',
+                        isBold: true,
+                        textAlign: 'center',
+                        lineSpacing: 1.2,
+                        quoteColor: '#ffffff',
+                        textShadow: 3,
+                        showQuotes: false
+                    },
+                    theme: 'gradient',
+                    sampleText: 'Success is not final, failure is not fatal'
+                },
+                {
+                    id: 'calm-motivation',
+                    name: 'Calm Motivation',
+                    category: 'motivational', 
+                    description: 'Elegant serif with peaceful vibes',
+                    style: {
+                        fontFamily: 'Playfair Display',
+                        fontSize: 'auto',
+                        isBold: false,
+                        textAlign: 'center',
+                        lineSpacing: 1.6,
+                        quoteColor: '#2c3e50',
+                        textShadow: 1,
+                        showQuotes: true
+                    },
+                    theme: 'minimal',
+                    sampleText: 'Every moment is a fresh beginning'
+                }
+            ],
+            business: [
+                {
+                    id: 'professional-impact',
+                    name: 'Professional Impact',
+                    category: 'business',
+                    description: 'Clean corporate styling',
+                    style: {
+                        fontFamily: 'Inter',
+                        fontSize: 'auto',
+                        isBold: false,
+                        textAlign: 'left',
+                        lineSpacing: 1.4,
+                        quoteColor: '#1a1a1a',
+                        textShadow: 0,
+                        showQuotes: false
+                    },
+                    theme: 'minimal',
+                    sampleText: 'Innovation distinguishes between a leader and a follower'
+                },
+                {
+                    id: 'executive-style',
+                    name: 'Executive Style',
+                    category: 'business',
+                    description: 'Premium dark theme for leadership',
+                    style: {
+                        fontFamily: 'Merriweather',
+                        fontSize: 'auto',
+                        isBold: true,
+                        textAlign: 'center',
+                        lineSpacing: 1.5,
+                        quoteColor: '#ffffff',
+                        textShadow: 2,
+                        showQuotes: true
+                    },
+                    theme: 'dark',
+                    sampleText: 'Excellence is never an accident'
+                }
+            ],
+            holiday: [
+                {
+                    id: 'festive-cheer',
+                    name: 'Festive Cheer',
+                    category: 'holiday',
+                    description: 'Warm colors for celebrations',
+                    style: {
+                        fontFamily: 'Dancing Script',
+                        fontSize: 'auto',
+                        isBold: false,
+                        textAlign: 'center',
+                        lineSpacing: 1.4,
+                        quoteColor: '#d4af37',
+                        textShadow: 2,
+                        showQuotes: false
+                    },
+                    theme: 'warm',
+                    sampleText: 'May your holidays be filled with joy'
+                }
+            ],
+            quotes: [
+                {
+                    id: 'classic-wisdom',
+                    name: 'Classic Wisdom',
+                    category: 'quotes',
+                    description: 'Traditional quote styling',
+                    style: {
+                        fontFamily: 'Crimson Text',
+                        fontSize: 'auto',
+                        isBold: false,
+                        textAlign: 'center',
+                        lineSpacing: 1.5,
+                        quoteColor: '#2e7d32',
+                        textShadow: 1,
+                        showQuotes: true
+                    },
+                    theme: 'nature',
+                    sampleText: 'The only way to do great work is to love what you do'
+                }
+            ],
+            announcements: [
+                {
+                    id: 'bold-announcement',
+                    name: 'Bold Announcement',
+                    category: 'announcements',
+                    description: 'Eye-catching for important news',
+                    style: {
+                        fontFamily: 'Bebas Neue',
+                        fontSize: 'auto',
+                        isBold: false,
+                        textAlign: 'center',
+                        lineSpacing: 1.1,
+                        quoteColor: '#ff007f',
+                        textShadow: 3,
+                        textStroke: 2,
+                        strokeColor: '#ffffff',
+                        showQuotes: false
+                    },
+                    theme: 'neon',
+                    sampleText: 'Big News Coming Soon!'
+                }
+            ]
+        };
 
         // Template selection
         document.querySelectorAll('.template-option').forEach(option => {
@@ -771,6 +1217,132 @@
         function updateLogoSizeDisplay() {
             const value = document.getElementById('logo-size').value;
             document.getElementById('logo-size-value').textContent = value + 'px';
+        }
+
+        function updateQRSizeDisplay() {
+            const value = document.getElementById('qr-size').value;
+            document.getElementById('qr-size-value').textContent = value + 'px';
+        }
+
+        // Template Library Functions
+        function initializeTemplateLibrary() {
+            populateTemplateGrid('all');
+        }
+
+        function filterTemplates(category) {
+            // Update active category button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            populateTemplateGrid(category);
+        }
+
+        function populateTemplateGrid(category) {
+            const grid = document.getElementById('template-grid');
+            grid.innerHTML = '';
+            
+            const allTemplates = Object.values(quoteTemplates).flat();
+            const filteredTemplates = category === 'all' ? allTemplates : allTemplates.filter(t => t.category === category);
+            
+            filteredTemplates.forEach(template => {
+                const card = createTemplateCard(template);
+                grid.appendChild(card);
+            });
+        }
+
+        function createTemplateCard(template) {
+            const card = document.createElement('div');
+            card.className = 'template-card';
+            card.dataset.templateId = template.id;
+            card.onclick = () => applyTemplate(template);
+            
+            card.innerHTML = `
+                <div class="template-preview" style="background: ${getTemplatePreviewBg(template.theme)}; color: ${template.style.quoteColor}; font-family: '${template.style.fontFamily}', serif;">
+                    "${template.sampleText.substring(0, 30)}${template.sampleText.length > 30 ? '...' : ''}"
+                </div>
+                <div class="template-name">${template.name}</div>
+                <div class="template-description">${template.description}</div>
+            `;
+            
+            return card;
+        }
+
+        function getTemplatePreviewBg(theme) {
+            const themes = {
+                minimal: 'linear-gradient(135deg, #fafafa, #ffffff)',
+                gradient: 'linear-gradient(135deg, #667eea, #764ba2)',
+                dark: 'linear-gradient(135deg, #1a1a1a, #2d3748)',
+                warm: 'linear-gradient(135deg, #ffecd2, #fcb69f)',
+                nature: 'linear-gradient(135deg, #d299c2, #fef9d7)',
+                neon: 'linear-gradient(135deg, #1a1a2e, #16213e)'
+            };
+            return themes[theme] || themes.minimal;
+        }
+
+        function applyTemplate(template) {
+            // Clear previous selection
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Select current template
+            document.querySelector(`[data-template-id="${template.id}"]`).classList.add('selected');
+            
+            // Apply template settings
+            selectedQuoteTemplate = template;
+            selectedTemplate = template.theme;
+            
+            // Update template theme selector
+            document.querySelectorAll('.template-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector(`[data-template="${template.theme}"]`).classList.add('selected');
+            
+            // Apply text styling
+            document.getElementById('font-family').value = template.style.fontFamily;
+            document.getElementById('text-bold').checked = template.style.isBold;
+            document.getElementById('text-italic').checked = template.style.isItalic || false;
+            document.getElementById('text-align').value = template.style.textAlign;
+            document.getElementById('line-spacing').value = template.style.lineSpacing;
+            document.getElementById('quote-color').value = template.style.quoteColor;
+            document.getElementById('text-shadow').value = template.style.textShadow;
+            document.getElementById('show-quotes').checked = template.style.showQuotes;
+            
+            if (template.style.textStroke) {
+                document.getElementById('text-stroke').value = template.style.textStroke;
+                document.getElementById('stroke-color').value = template.style.strokeColor;
+            }
+            
+            // Update displays
+            updateLineSpacingDisplay();
+            updateShadowDisplay();
+            updateStrokeDisplay();
+            
+            // Update preview
+            updatePreview();
+        }
+
+        // QR Code Functions
+        async function generateQRCode() {
+            const url = document.getElementById('qr-url').value.trim();
+            if (!url) return null;
+            
+            try {
+                const qrDataURL = await QRCode.toDataURL(url, {
+                    width: 200,
+                    margin: 1,
+                    color: {
+                        dark: '#000000',
+                        light: '#FFFFFF'
+                    }
+                });
+                return qrDataURL;
+            } catch (error) {
+                console.error('QR Code generation failed:', error);
+                return null;
+            }
         }
 
         function toggleWatermarkType() {
@@ -873,11 +1445,18 @@
             }
         }
 
-        function updatePreview() {
+        async function updatePreview() {
             // Auto-generate preview if text exists
             const quoteText = document.getElementById('quote-text').value.trim();
             if (quoteText) {
                 const authorName = document.getElementById('author-name').value.trim();
+                
+                // Generate QR code if enabled
+                const customStyles = getCustomStyles();
+                if (customStyles.enableQR && customStyles.qrUrl) {
+                    await generateQRCode();
+                }
+                
                 drawQuote(quoteText, authorName, selectedTemplate);
             }
         }
@@ -903,17 +1482,29 @@
                 watermarkOpacity: parseInt(document.getElementById('watermark-opacity').value),
                 watermarkSize: parseInt(document.getElementById('watermark-size').value),
                 logoSize: parseInt(document.getElementById('logo-size').value),
-                watermarkColor: document.getElementById('watermark-color').value
+                watermarkColor: document.getElementById('watermark-color').value,
+                enableQR: document.getElementById('enable-qr').checked,
+                qrUrl: document.getElementById('qr-url').value,
+                qrPosition: document.getElementById('qr-position').value,
+                qrSize: parseInt(document.getElementById('qr-size').value),
+                qrBackground: document.getElementById('qr-background').value,
+                qrBgColor: document.getElementById('qr-bg-color').value
             };
         }
 
-        function generateQuote() {
+        async function generateQuote() {
             const quoteText = document.getElementById('quote-text').value.trim();
             const authorName = document.getElementById('author-name').value.trim();
             
             if (!quoteText) {
                 alert('Please enter a quote text');
                 return;
+            }
+
+            // Generate QR code if enabled
+            const customStyles = getCustomStyles();
+            if (customStyles.enableQR) {
+                qrCodeDataURL = await generateQRCode();
             }
 
             drawQuote(quoteText, authorName, selectedTemplate);
@@ -1270,6 +1861,11 @@
                     drawLogoWatermark(customStyles);
                 }
             }
+
+            // Draw QR code if enabled
+            if (customStyles.enableQR && qrCodeDataURL) {
+                drawQRCode(customStyles);
+            }
         }
 
         function drawTextWatermark(styles) {
@@ -1399,6 +1995,55 @@
 
             // Restore context state
             ctx.restore();
+        }
+
+        function drawQRCode(styles) {
+            if (!qrCodeDataURL) return;
+
+            const qrImage = new Image();
+            qrImage.onload = function() {
+                // Save context state
+                ctx.save();
+
+                const qrSize = styles.qrSize;
+                const padding = 15;
+                let x, y;
+
+                switch (styles.qrPosition) {
+                    case 'bottom-right':
+                        x = canvas.width - qrSize - padding;
+                        y = canvas.height - qrSize - padding;
+                        break;
+                    case 'bottom-left':
+                        x = padding;
+                        y = canvas.height - qrSize - padding;
+                        break;
+                    case 'top-right':
+                        x = canvas.width - qrSize - padding;
+                        y = padding;
+                        break;
+                    case 'top-left':
+                        x = padding;
+                        y = padding;
+                        break;
+                    default:
+                        x = canvas.width - qrSize - padding;
+                        y = canvas.height - qrSize - padding;
+                }
+
+                // Draw background if specified
+                if (styles.qrBackground !== 'transparent') {
+                    ctx.fillStyle = styles.qrBackground === 'custom' ? styles.qrBgColor : '#ffffff';
+                    ctx.fillRect(x - 5, y - 5, qrSize + 10, qrSize + 10);
+                }
+
+                // Draw QR code
+                ctx.drawImage(qrImage, x, y, qrSize, qrSize);
+
+                // Restore context state
+                ctx.restore();
+            };
+            qrImage.src = qrCodeDataURL;
         }
 
         function calculateOptimalFontSize(text, maxWidth, maxHeight) {
@@ -1572,6 +2217,22 @@
             updateWatermarkOpacityDisplay();
             updateWatermarkSizeDisplay();
             updateLogoSizeDisplay();
+            updateQRSizeDisplay();
+            initializeTemplateLibrary();
+            
+            // Initialize QR code generation on URL change
+            document.getElementById('qr-url').addEventListener('input', generateQRCode);
+            document.getElementById('enable-qr').addEventListener('change', function() {
+                if (this.checked) {
+                    generateQRCode();
+                }
+            });
+            
+            // Toggle QR background color input visibility
+            document.getElementById('qr-background').addEventListener('change', function() {
+                const colorGroup = document.getElementById('qr-color-group');
+                colorGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+            });
         });
 
         function wrapTextToLines(text, ctx, maxWidth) {
@@ -1672,6 +2333,188 @@
             link.download = `quote-${sizeName}-${canvas.width}x${canvas.height}.${format}`;
             link.href = canvas.toDataURL(mimeType, 0.9);
             link.click();
+        }
+
+        // Template Library Functions
+        function initializeTemplateLibrary() {
+            populateTemplateGrid();
+        }
+
+        function populateTemplateGrid() {
+            const grid = document.getElementById('template-grid');
+            grid.innerHTML = '';
+
+            const allTemplates = [];
+            Object.values(quoteTemplates).forEach(category => {
+                allTemplates.push(...category);
+            });
+
+            allTemplates.forEach(template => {
+                const templateCard = createTemplateCard(template);
+                grid.appendChild(templateCard);
+            });
+        }
+
+        function createTemplateCard(template) {
+            const card = document.createElement('div');
+            card.className = `template-card template-${template.theme}`;
+            card.setAttribute('data-category', template.category);
+            card.onclick = () => applyTemplate(template);
+
+            card.innerHTML = `
+                <div class="template-preview">
+                    <div class="template-text" style="font-family: '${template.style.fontFamily}'; text-align: ${template.style.textAlign}; font-weight: ${template.style.isBold ? 'bold' : 'normal'};">
+                        "${template.sampleText}"
+                    </div>
+                </div>
+                <div class="template-info">
+                    <h4>${template.name}</h4>
+                    <p>${template.description}</p>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function filterTemplates(category) {
+            const cards = document.querySelectorAll('.template-card');
+            const buttons = document.querySelectorAll('.category-btn');
+
+            // Update active button
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-category') === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Filter templates
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function applyTemplate(template) {
+            // Apply template styling
+            document.getElementById('font-family').value = template.style.fontFamily;
+            document.getElementById('text-bold').checked = template.style.isBold;
+            document.getElementById('text-italic').checked = template.style.isItalic || false;
+            document.getElementById('text-align').value = template.style.textAlign;
+            document.getElementById('line-spacing').value = template.style.lineSpacing;
+            document.getElementById('quote-color').value = template.style.quoteColor;
+            document.getElementById('text-shadow').value = template.style.textShadow;
+            document.getElementById('show-quotes').checked = template.style.showQuotes;
+
+            // Set font size
+            if (template.style.fontSize === 'auto') {
+                document.getElementById('font-size').value = 50; // Auto mode
+            } else {
+                document.getElementById('font-size').value = template.style.fontSize;
+            }
+
+            // Apply theme
+            const themeOption = document.querySelector(`.template-option[data-template="${template.theme}"]`);
+            if (themeOption) {
+                document.querySelectorAll('.template-option').forEach(opt => opt.classList.remove('selected'));
+                themeOption.classList.add('selected');
+                selectedTemplate = template.theme;
+            }
+
+            // Update displays
+            updateFontSizeDisplay();
+            updateLineSpacingDisplay();
+            updateShadowDisplay();
+
+            // Update preview
+            updatePreview();
+
+            // Show feedback
+            showTemplateFeedback(`✅ Applied ${template.name} template!`);
+        }
+
+        function showTemplateFeedback(message) {
+            // Create temporary feedback element
+            const feedback = document.createElement('div');
+            feedback.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                z-index: 1000;
+                font-weight: bold;
+            `;
+            feedback.textContent = message;
+            document.body.appendChild(feedback);
+
+            setTimeout(() => {
+                document.body.removeChild(feedback);
+            }, 3000);
+        }
+
+        // QR Code Functions
+        async function generateQRCode() {
+            const qrUrl = document.getElementById('qr-url').value.trim();
+            if (!qrUrl) return;
+
+            try {
+                const qrCanvas = document.createElement('canvas');
+                await QRCode.toCanvas(qrCanvas, qrUrl, {
+                    width: 200,
+                    margin: 1,
+                    color: {
+                        dark: '#000000',
+                        light: '#FFFFFF'
+                    }
+                });
+                qrCodeDataURL = qrCanvas.toDataURL();
+            } catch (error) {
+                console.error('QR Code generation failed:', error);
+                qrCodeDataURL = null;
+            }
+        }
+
+        function updateQRSizeDisplay() {
+            const size = document.getElementById('qr-size').value;
+            document.getElementById('qr-size-value').textContent = size + 'px';
+        }
+
+        // Enhanced getCustomStyles function to include QR settings
+        function getCustomStyles() {
+            const styles = {
+                fontFamily: document.getElementById('font-family').value,
+                isBold: document.getElementById('text-bold').checked,
+                isItalic: document.getElementById('text-italic').checked,
+                textAlign: document.getElementById('text-align').value,
+                fontSize: parseInt(document.getElementById('font-size').value),
+                lineSpacing: parseFloat(document.getElementById('line-spacing').value),
+                quoteColor: document.getElementById('quote-color').value,
+                authorColor: document.getElementById('author-color').value,
+                textShadow: parseInt(document.getElementById('text-shadow').value),
+                textStroke: parseInt(document.getElementById('text-stroke').value),
+                strokeColor: document.getElementById('stroke-color').value,
+                showQuotes: document.getElementById('show-quotes').checked,
+                enableWatermark: document.getElementById('enable-watermark').checked,
+                watermarkType: document.getElementById('watermark-type').value,
+                watermarkText: document.getElementById('watermark-text').value,
+                watermarkPosition: document.getElementById('watermark-position').value,
+                watermarkOpacity: parseInt(document.getElementById('watermark-opacity').value),
+                watermarkSize: parseInt(document.getElementById('watermark-size').value),
+                watermarkColor: document.getElementById('watermark-color').value,
+                logoSize: parseInt(document.getElementById('logo-size').value),
+                enableQR: document.getElementById('enable-qr').checked,
+                qrPosition: document.getElementById('qr-position').value,
+                qrSize: parseInt(document.getElementById('qr-size').value),
+                qrBackground: document.getElementById('qr-background').value,
+                qrBgColor: document.getElementById('qr-bg-color').value
+            };
+            return styles;
         }
     </script>
 </body>
